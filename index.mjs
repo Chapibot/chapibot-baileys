@@ -1,38 +1,65 @@
 import * as baileys from '@whiskeysockets/baileys';
-import { Boom } from '@hapi/boom';
-import qrcode from 'qrcode-terminal';
+import { log } from './utils/logger.mjs';
+import { ConnectionHandler } from './handlers/connectionHandler.mjs';
+import { MessageHandler } from './handlers/messageHandler.mjs';
+
+// Configuración del bot
+const BOT_CONFIG = {
+  authPath: 'auth_info',
+  printQR: true,
+  browser: ['ChapiBot', 'Chrome', '1.0.0'],
+  connectTimeoutMs: 60000,
+  defaultQueryTimeoutMs: 60000,
+  emitOwnEvents: false,
+  markOnlineOnConnect: true,
+  retryRequestDelayMs: 250
+};
 
 async function startBot() {
-  const { state, saveCreds } = await baileys.useMultiFileAuthState('auth_info');
-  const sock = baileys.makeWASocket({
-    auth: state,
-    printQRInTerminal: false,
-  });
+  try {
+    // Inicializar estado de autenticación
+    const { state, saveCreds } = await baileys.useMultiFileAuthState(BOT_CONFIG.authPath);
+    
+    // Crear socket de WhatsApp
+    const sock = baileys.makeWASocket({
+      auth: state,
+      printQRInTerminal: BOT_CONFIG.printQR,
+      browser: BOT_CONFIG.browser,
+      connectTimeoutMs: BOT_CONFIG.connectTimeoutMs,
+      defaultQueryTimeoutMs: BOT_CONFIG.defaultQueryTimeoutMs,
+      emitOwnEvents: BOT_CONFIG.emitOwnEvents,
+      markOnlineOnConnect: BOT_CONFIG.markOnlineOnConnect,
+      retryRequestDelayMs: BOT_CONFIG.retryRequestDelayMs
+    });
 
-  sock.ev.on('connection.update', ({ connection, qr, lastDisconnect }) => {
-    if (qr) {
-      qrcode.generate(qr, { small: true });
-    }
-    if (connection === 'close') {
-      const shouldReconnect =
-        new Boom(lastDisconnect?.error)?.output?.statusCode !== baileys.DisconnectReason.loggedOut;
-      if (shouldReconnect) startBot();
-      else console.log('Sesión cerrada. Escanea el QR para volver a iniciar.');
-    } else if (connection === 'open') {
-      console.log('✅ Conectado a WhatsApp como ChapiBot');
-    }
-  });
+    // Guardar credenciales cuando se actualicen
+    sock.ev.on('creds.update', saveCreds);
 
-  sock.ev.on('creds.update', saveCreds);
+    // Inicializar manejadores
+    new ConnectionHandler(sock, startBot);
+    new MessageHandler(sock);
 
-  sock.ev.on('messages.upsert', async (m) => {
-    const msg = m.messages[0];
-    if (!msg.key.fromMe && msg.message) {
-      await sock.sendMessage(msg.key.remoteJid, {
-        text: 'Hola! Soy ChapiBot, tu garzón virtual 🤖🍽️ ¿Qué te gustaría pedir hoy?'
-      });
-    }
-  });
+    log.success('Bot iniciado correctamente');
+
+  } catch (error) {
+    log.error('Error al iniciar el bot', error);
+    process.exit(1);
+  }
 }
 
-startBot();
+// Manejar señales de terminación
+process.on('SIGINT', () => {
+  log.info('Bot detenido por el usuario');
+  process.exit(0);
+});
+
+process.on('uncaughtException', (error) => {
+  log.error('Error no manejado', error);
+  process.exit(1);
+});
+
+// Iniciar el bot
+startBot().catch(error => {
+  log.error('Error fatal al iniciar el bot', error);
+  process.exit(1);
+});
