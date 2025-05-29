@@ -23,7 +23,7 @@ export class ConnectionHandler {
   }
 
   handleQR(qr) {
-    log.info('QR Code generado. Escanea con WhatsApp para conectar.');
+    log.info('Código QR generado. Por favor, escanea con WhatsApp para conectar.');
     // El QR se mostrará en la consola por la configuración de Baileys
   }
 
@@ -31,14 +31,14 @@ export class ConnectionHandler {
     const shouldReconnect = new Boom(lastDisconnect?.error)?.output?.statusCode !== 401;
     
     if (shouldReconnect) {
-      log.warn('Conexión cerrada. Intentando reconectar...');
+      log.warn('Conexión perdida. Intentando reconectar...');
       this.startBot();
     } else {
-      log.error('Sesión cerrada. Por favor, escanea el código QR nuevamente.');
+      log.error('Sesión finalizada. Por favor, escanea el código QR nuevamente.');
     }
   }
 
   handleConnection() {
-    log.success('Conectado a WhatsApp como ChapiBot');
+    log.success('¡Conectado exitosamente a WhatsApp como ChapiBot!');
   }
 } 

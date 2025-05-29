@@ -54,7 +54,7 @@ process.on('SIGINT', () => {
 });
 
 process.on('uncaughtException', (error) => {
-  log.error('Error no manejado', error);
+  log.error('Error no manejado en el sistema', error);
   process.exit(1);
 });
 

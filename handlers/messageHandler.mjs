@@ -31,7 +31,7 @@ export class MessageHandler {
 
       await this.sendResponse(sender);
     } catch (error) {
-      log.error('Error handling message', error);
+      log.error('Error al procesar el mensaje', error);
     }
   }
 
@@ -45,11 +45,11 @@ export class MessageHandler {
   async sendResponse(recipient) {
     try {
       await this.sock.sendMessage(recipient, {
-        text: 'Hola! Soy ChapiBot, tu garzón virtual 🤖🍽️ ¿Qué te gustaría pedir hoy?'
+        text: '¡Hola! Soy ChapiBot, tu asistente virtual 🤖\n\n¿En qué puedo ayudarte hoy?'
       });
-      log.success('Respuesta enviada', { to: recipient });
+      log.success('Respuesta enviada correctamente', { to: recipient });
     } catch (error) {
-      log.error('Error sending response', error, { to: recipient });
+      log.error('Error al enviar respuesta', error, { to: recipient });
     }
   }
 } 
