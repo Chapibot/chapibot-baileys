@@ -39,6 +39,6 @@ export class ConnectionHandler {
   }
 
   handleConnection() {
-    log.success('¡Conectado exitosamente a WhatsApp como AlonsoBot!');
+    log.success('¡Conectado exitosamente a WhatsApp como ChapiBot!');
   }
 } 

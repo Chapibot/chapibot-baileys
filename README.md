@@ -1,4 +1,4 @@
-# ChapiBot WhatsApp
+# AlonsoBot WhatsApp
 
 Bot de WhatsApp desarrollado con Node.js y Baileys.
 

@@ -1,7 +1,7 @@
 import * as baileys from '@whiskeysockets/baileys';
-import { log } from './src/utils/logger.mjs';
-import { ConnectionHandler } from '../handlers/connectionHandler.mjs';
-import { MessageHandler } from '../handlers/messageHandler.mjs';
+import { log } from './utils/logger.mjs';
+import { ConnectionHandler } from './handlers/connectionHandler.mjs';
+import { MessageHandler } from './handlers/messageHandler.mjs';
 
 // Configuración del bot
 const BOT_CONFIG = {
@@ -54,7 +54,7 @@ process.on('SIGINT', () => {
 });
 
 process.on('uncaughtException', (error) => {
-  log.error('Error no manejado en el sistema', error);
+  log.error('Error no manejado', error);
   process.exit(1);
 });
 
@@ -62,4 +62,4 @@ process.on('uncaughtException', (error) => {
 startBot().catch(error => {
   log.error('Error fatal al iniciar el bot', error);
   process.exit(1);
-});
+}); 

@@ -45,7 +45,7 @@ export class MessageHandler {
   async sendResponse(recipient) {
     try {
       await this.sock.sendMessage(recipient, {
-        text: '¡Hola! Soy AlonsoBot, tu asistente virtual 🤖\n\n¿En qué puedo ayudarte hoy?'
+        text: '¡Hola! Soy ChapiBot, tu asistente virtual 🤖\n\n¿En qué puedo ayudarte hoy?'
       });
       log.success('Respuesta enviada correctamente', { to: recipient });
     } catch (error) {

@@ -1,13 +1,13 @@
 import * as baileys from '@whiskeysockets/baileys';
-import { log } from './utils/logger.mjs';
-import { ConnectionHandler } from './handlers/connectionHandler.mjs';
-import { MessageHandler } from './handlers/messageHandler.mjs';
+import { log } from '../utils/logger.mjs';
+import { ConnectionHandler } from '../handlers/connectionHandler.mjs';
+import { MessageHandler } from '../handlers/messageHandler.mjs';
 
 // Configuración del bot
 const BOT_CONFIG = {
   authPath: 'auth_info',
   printQR: true,
-  browser: ['ChapiBot', 'Chrome', '1.0.0'],
+  browser: ['AlonsoBot', 'Chrome', '1.0.0'],
   connectTimeoutMs: 60000,
   defaultQueryTimeoutMs: 60000,
   emitOwnEvents: false,

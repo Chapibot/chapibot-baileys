@@ -1,7 +1,7 @@
 {
-  "name": "chapibot-baileys",
+  "name": "alonsobot",
   "version": "1.0.0",
-  "description": "ChapiBot WhatsApp bot using Baileys and Node.js",
+  "description": "AlonsoBot WhatsApp bot using Baileys and Node.js",
   "main": "index.mjs",
   "type": "module",
   "scripts": {

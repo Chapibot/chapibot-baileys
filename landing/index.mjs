@@ -1,7 +1,7 @@
 import * as baileys from '@whiskeysockets/baileys';
-import { log } from './src/utils/logger.mjs';
-import { ConnectionHandler } from '../handlers/connectionHandler.mjs';
-import { MessageHandler } from '../handlers/messageHandler.mjs';
+import { log } from './utils/logger.mjs';
+import { ConnectionHandler } from './handlers/connectionHandler.mjs';
+import { MessageHandler } from './handlers/messageHandler.mjs';
 
 // Configuración del bot
 const BOT_CONFIG = {
